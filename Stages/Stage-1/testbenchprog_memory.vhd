@@ -1,0 +1,41 @@
+LIBRARY IEEE;
+    USE IEEE.STD_LOGIC_1164.ALL;
+    USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY RAM_TB IS 
+-- empty
+END ENTITY;
+
+ARCHITECTURE BEV OF RAM_TB IS
+
+
+SIGNAL READ_ADDRESS : STD_LOGIC_VECTOR(7 DOWNTO 0):="00000000";
+SIGNAL DATAOUT : STD_LOGIC_VECTOR(31 DOWNTO 0);
+
+-- DUT component
+COMPONENT program_memory IS
+    PORT(read_address: in std_logic_vector(7 downto 0);
+  data_out: out std_logic_vector(31 downto 0));
+END COMPONENT;
+
+BEGIN
+
+  -- Connect DUT
+  UUT: program_memory PORT MAP(READ_ADDRESS, DATAOUT);
+
+  PROCESS
+  BEGIN
+    -- Read data from RAM
+    READ_ADDRESS<="00010000";
+    wait for 5 ns;
+    assert(DATAOUT="00000000000000000000000000000000") REPORT "FAIL 0/0" SEVERITY ERROR;
+    WAIT FOR 100 ns;
+    READ_ADDRESS<="01000000";
+    wait for 5 ns;
+    assert(DATAOUT="00000000000000000000000000000000") REPORT "FAIL 0/0" SEVERITY ERROR;
+    
+    ASSERT FALSE REPORT "Test done. Open EPWave to see signals." SEVERITY NOTE;
+    WAIT;
+  END PROCESS;
+
+END BEV;

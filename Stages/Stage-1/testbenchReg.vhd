@@ -1,0 +1,83 @@
+LIBRARY IEEE;
+    USE IEEE.STD_LOGIC_1164.ALL;
+    USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY RAM_TB IS 
+-- empty
+END ENTITY;
+
+ARCHITECTURE BEV OF RAM_TB IS
+
+SIGNAL DATAIN : STD_LOGIC_VECTOR(31 DOWNTO 0):="00000000000000000000000000000000";
+SIGNAL READ_ADDRESS1 : STD_LOGIC_VECTOR(3 DOWNTO 0):="0000";
+SIGNAL READ_ADDRESS2 : STD_LOGIC_VECTOR(3 DOWNTO 0):="0000";
+SIGNAL WRITE_ADDRESS : STD_LOGIC_VECTOR(3 DOWNTO 0):="0000";
+SIGNAL WR_EN : STD_LOGIC:='0';
+SIGNAL CLK: std_logic;
+SIGNAL DATAOUT1 : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL DATAOUT2 : STD_LOGIC_VECTOR(31 DOWNTO 0);
+
+-- DUT component
+COMPONENT register_file IS
+    PORT(read_address1: in std_logic_vector(3 downto 0);
+  read_address2: in std_logic_vector(3 downto 0);
+  write_address: in std_logic_vector(3 downto 0);
+  data_in: in std_logic_vector(31 downto 0);
+  write_enable: in std_logic;
+  clock: in std_logic;
+  data_out1: out std_logic_vector(31 downto 0);
+  data_out2: out std_logic_vector(31 downto 0)); 
+END COMPONENT;
+
+BEGIN
+
+  -- Connect DUT
+  UUT: register_file PORT MAP(READ_ADDRESS1, READ_ADDRESS2, WRITE_ADDRESS, DATAIN, WR_EN, CLK, DATAOUT1, DATAOUT2);
+
+  PROCESS
+  BEGIN
+    -- Write data into RAM
+    WR_EN <= '1';
+    WAIT FOR 50 ns;
+    CLK <= '0';
+    WAIT FOR 50 ns;
+    CLK <= '1';
+    WRITE_ADDRESS<="1000";
+    DATAIN<="01111111000000000000000000000000";
+    WAIT FOR 50 ns;
+    CLK <= '0';
+    WAIT FOR 50 ns;
+    CLK <= '1';
+    WRITE_ADDRESS<="0100";
+    DATAIN<="10111111000000000000000000000000";
+    WAIT FOR 50 ns;
+    CLK <= '0';
+    WAIT FOR 50 ns;
+    CLK <= '1';
+    WRITE_ADDRESS<="0010";
+    DATAIN<="11011111000000000000000000000000";
+    WAIT FOR 50 ns;
+    CLK <= '0';
+    WAIT FOR 50 ns;
+    CLK <= '1';
+    WRITE_ADDRESS<="0001";
+    DATAIN<="11101111000000000000000000000000";
+    WAIT FOR 110 ns;
+
+    -- Read data from RAM
+    WR_EN<='0';
+    READ_ADDRESS1<="0001";
+    READ_ADDRESS2<="1000";
+    wait for 5 ns;
+    assert(DATAOUT1="11101111000000000000000000000000" AND DATAOUT2="01111111000000000000000000000000") REPORT "FAIL 0/0" SEVERITY ERROR;
+    WAIT FOR 100 ns;
+    READ_ADDRESS1<="0100";
+    READ_ADDRESS2<="0010";
+    wait for 5 ns;
+    assert(DATAOUT1="10111111000000000000000000000000" AND DATAOUT2="11011111000000000000000000000000") REPORT "FAIL 0/0" SEVERITY ERROR;
+    
+    ASSERT FALSE REPORT "Test done. Open EPWave to see signals." SEVERITY NOTE;
+    WAIT;
+  END PROCESS;
+
+END BEV;
