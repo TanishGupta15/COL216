@@ -26,7 +26,7 @@ The logic for Single Cycle Datapath and Multi Cycle Datapath + Controller was ta
 
 ## Copyright
 
-This repository was made for Assignment-2 of course COL216, II Semester, 2020-21 at IIT Delhi under Prof Anshul Kumar. Copy at your own risk :) (As I always say, changing variable names won't help you escape plagiarism).
+This repository was made for Assignment-2 of course COL216, II Semester, 2020-21 at IIT Delhi under Prof Anshul Kumar. Copy at your own risk :) (Changing variable names won't help you escape plagiarism).
 
 
 ## Author
