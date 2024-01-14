@@ -1,7 +1,7 @@
 # Mini-Processor
 
 
-This repository contains code for dsigning a hardware that implements a processor which can execute a subset of ARM instructions. Further details can be found in the document titled "Lab Assignment 2 Overview.pdf".
+This repository contains code for designing a hardware that implements a processor which can execute a subset of ARM instructions. Further details can be found in the document titled "Lab Assignment 2 Overview.pdf".
 
 
 ## Logistics
